@@ -8,7 +8,7 @@ import plotly.express as px
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import StratifiedShuffleSplit, KFold, cross_val_score
+from sklearn.model_selection import StratifiedShuffleSplit, KFold, cross_val_score, StratifiedKFold
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
@@ -153,6 +153,6 @@ def cross_val_metrics(model, X_train, y_train, seed=42):
     scores = ['accuracy', 'precision', 'recall', 'f1']
 
     for one_score in scores:
-        folds = KFold(n_splits=10, shuffle=True, random_state=seed)
-        scores = cross_val_score(model, X_train, y_train, cv=folds, scoring=one_score, )
+        folds = StratifiedKFold(n_splits=7, shuffle=True, random_state=seed)
+        scores = cross_val_score(model, X_train, y_train, cv=folds, scoring=one_score)
         print(f'[{one_score.title()}] : %0.5f (+/- %0.5f)' % (scores.mean(), scores.std()))
